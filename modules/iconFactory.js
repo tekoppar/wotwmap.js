@@ -10,6 +10,7 @@ class IconFactory {
         this.activeIconPicker;
         this.iconBeingDragged
         this.dropdown;
+        this.icons = [];
 
         this.createHTML();
         this.indexCategories();
@@ -213,6 +214,35 @@ class IconFactory {
         this.mapClass.mapContainer.appendChild(icon);
 
         return icon;
+    }
+
+    createIconHTML(icons) {
+        for (var i = 0; i < icons.length; i++) {
+            if (icons[i].iconName !== undefined && icons[i].iconName !== null && icons[i].iconName !== 'null') {
+                var icon = icons[i],
+                    newIcon,
+                    tempIconData = this.iconData[icon.category][icon.iconName];
+
+                newIcon = this.createIcon(icon);
+                newIcon.style.display = 'flex';
+                newIcon.removeAttribute('new');
+                if (icon.icon !== undefined) {
+                    newIcon.dataset.icon = icon.icon;
+                } else {
+                    icons[i].icon = tempIconData.name;
+                    newIcon.dataset.icon = tempIconData.name;
+                }
+                newIcon.id = icon.mapId;
+                newIcon.setAttribute('iconName', icon.iconName);
+                newIcon.dataset.iconId = i;
+                newIcon.dataset.category = tempIconData.category;
+                newIcon.dataset.iconName = icon.iconName;
+
+                this.setIconFromSheet(newIcon);
+                newIcon.dataset.name = icon.name !== undefined ? icon.name : tempIconData.name;
+                this.icons.push(newIcon);
+            }
+        }
     }
 
     createIconsIconPicker() {

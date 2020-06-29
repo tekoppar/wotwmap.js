@@ -1,5 +1,6 @@
 import Map from './map.js';
 import IconFactory from './iconFactory.js';
+import SeedTransform from './seedTransform.js';
 
 class WOTW {
     constructor() {
@@ -9,12 +10,15 @@ class WOTW {
         this.iconFactory;
         this.timeline;
         this.shop;
+        this.seedTransform;
+
         if (typeof Drawer === 'function') {
             this.drawer = new Drawer();
         }
 
         if (typeof Map === 'function') {
             this.map = new Map(document.getElementById('map-container'));
+            this.map.mapImage.addEventListener('load', this, false);
         }
 
         if (typeof IconFactory === 'function') {
@@ -27,6 +31,10 @@ class WOTW {
 
         if (typeof Shop === 'function') {
             this.shop = new Shop(this.iconFactory);
+        }
+
+        if (typeof SeedTransform === 'function') {
+            this.seedTransform = new SeedTransform(this.map, this.iconFactory);
         }
 
         this.inventory;
@@ -245,35 +253,6 @@ class WOTW {
             this.icons = this.icons.concat(JSON.parse(tempIconJSON));
         }
 
-        for (var i = 0; i < this.icons.length; i++) {
-            if (this.icons[i].iconName !== null && this.icons[i].iconName !== 'null') {
-                var icon = this.icons[i],
-                    newIcon,
-                    tempIconData = iconDataNew[icon.category][icon.iconName];
-
-                newIcon = wotw.iconFactory.createIcon(icon);
-                newIcon.style.display = 'flex';
-                newIcon.removeAttribute('new');
-                if (icon.icon !== undefined) {
-                    newIcon.dataset.icon = icon.icon;
-                } else {
-                    this.icons[i].icon = tempIconData.name;
-                    newIcon.dataset.icon = tempIconData.name;
-                }
-                newIcon.id = icon.mapId;
-                newIcon.setAttribute('iconName', icon.iconName);
-                newIcon.dataset.iconId = i;
-                newIcon.dataset.name = tempIconData.name;
-                newIcon.dataset.category = tempIconData.category;
-                newIcon.dataset.iconName = icon.iconName;
-
-                this.iconFactory.setIconFromSheet(newIcon);
-            }
-        }
-
-        if (this.shop) {
-            this.shop.createShops();
-        }
         this.populateFilterData();
     }
 
@@ -402,6 +381,7 @@ class WOTW {
                 this.allBranches[i].standard = true;
             }
         }
+
         var urlParams = new URLSearchParams(window.location.search);
 
         //createIconsIconPicker();
@@ -413,6 +393,17 @@ class WOTW {
         if (typeof Inventory === 'function') {
             this.inventory = new Inventory();
             this.inventory.updatePickups();
+        }
+        if (this.seedTransform) {
+            this.icons = this.seedTransform.mapItems;
+            //this.seedTransform.posToSeedLocation(this.icons);
+            //this.seedTransform.createSeedIcons();
+        }
+        if (this.iconFactory) {
+            this.iconFactory.createIconHTML(this.icons);
+        }
+        if (this.shop) {
+            this.shop.createShops();
         }
         //checkParams(urlParams);
     }

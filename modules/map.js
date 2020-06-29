@@ -232,6 +232,16 @@ class Map {
         };
     }
 
+    inGameToMapCoord(pos) {
+        var mapCoords = {x:0,y:0},
+            mapCanvasRect = this.mapCanvas.getBoundingClientRect();
+
+        mapCoords.y = (4796.8700000000003 + (((parseFloat(pos.y) * -1)) * -1) / 0.72) * -1;
+        mapCoords.x = (((parseFloat(pos.x) - 2440.73) / 0.726) * -1).mapRange(0, Math.abs(mapCanvasRect.width) / this.currentZoom, Math.abs(mapCanvasRect.width) / this.currentZoom, 0);
+
+        return mapCoords;
+    }
+
     showMapLocationNodes() {
         wotw.drawer.clearMap();
         ctxPaint.beginPath();
@@ -288,6 +298,7 @@ class Map {
 
             case 'mousemove':
                 if (this.isDraggingMap) {
+                    this.getMapData(event);
                     this.moveMap(event);    
                 }
                 break;
