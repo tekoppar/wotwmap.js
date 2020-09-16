@@ -211,17 +211,28 @@ class IconFactory {
         icon.setAttribute('new', true);
         icon.addEventListener('mousedown', this, false);
 
-        this.mapClass.mapContainer.appendChild(icon);
+        //this.mapClass.mapContainer.appendChild(icon);
 
         return icon;
     }
 
+    clearIcons() {
+        var icons = document.querySelectorAll('span.map-icon-onmap');
+
+        for (var i = 0; i < icons.length; i++) {
+            icons[i].remove();
+        }
+        this.icons = [];
+    }
+
     createIconHTML(icons) {
+        this.clearIcons();
+        
         for (var i = 0; i < icons.length; i++) {
             if (icons[i].iconName !== undefined && icons[i].iconName !== null && icons[i].iconName !== 'null') {
                 var icon = icons[i],
                     newIcon,
-                    tempIconData = this.iconData[icon.category][icon.iconName];
+                    tempIconData = (icon.category !== undefined && this.iconData[icon.category] !== undefined && this.iconData[icon.category][icon.iconName] !== undefined ? this.iconData[icon.category][icon.iconName] : this.iconData.mapIcon['Frame Glow']);
 
                 newIcon = this.createIcon(icon);
                 newIcon.style.display = 'flex';
@@ -237,11 +248,16 @@ class IconFactory {
                 newIcon.dataset.iconId = i;
                 newIcon.dataset.category = tempIconData.category;
                 newIcon.dataset.iconName = icon.iconName;
-
-                this.setIconFromSheet(newIcon);
                 newIcon.dataset.name = icon.name !== undefined ? icon.name : tempIconData.name;
+                //this.setIconFromSheet(newIcon);
                 this.icons.push(newIcon);
             }
+        }
+        for (var i = 0; i < this.icons.length; i++) {
+            var newIcon = this.icons[i];
+            this.mapClass.mapContainer.appendChild(newIcon);
+            this.setIconFromSheet(newIcon);
+            //newIcon.dataset.name = icon.name !== undefined ? icon.name : tempIconData.name;
         }
     }
 
@@ -296,7 +312,7 @@ class IconFactory {
                     row = Math.floor(index / this.columnSpan),
                     column = index - (row * this.columnSpan);
 
-                this.activeIconPicker.style.background = "url('iconsheet2.webp') no-repeat";
+                this.activeIconPicker.style.background = "url('iconsheet3.webp') no-repeat";
                 this.activeIconPicker.style.backgroundPosition = ((100 / (this.columnSpan - 1)) * column) + 0.020 + '% ' + ((100 / (this.rowSpan - 1)) * row) + '%';
                 this.activeIconPicker.style.backgroundSize = '2900% 1300%';
 
@@ -321,11 +337,12 @@ class IconFactory {
             } else if (icon.dataset.category && icon.dataset.iconName) {
                 index = this.categoriesIndex[icon.dataset.category] + Object.keys(this.iconData[icon.dataset.category]).indexOf(icon.dataset.iconName);
 
-                var tempIconData = this.iconData[icon.dataset.category][icon.dataset.iconName],
+                //var tempIconData = this.iconData[icon.dataset.category][icon.dataset.iconName],
+                var tempIconData = (icon.dataset.category !== undefined && this.iconData[icon.dataset.category][icon.dataset.iconName] !== undefined ? this.iconData[icon.dataset.category][icon.dataset.iconName] : this.iconData.mapIcon['Frame Glow']);
                     row = Math.floor(index / this.columnSpan),
                     column = index - (row * this.columnSpan);
 
-                icon.style.background = "url('iconsheet2.webp') no-repeat";
+                icon.style.background = "url('iconsheet3.webp') no-repeat";
                 icon.style.backgroundPosition = ((100 / (this.columnSpan - 1)) * column) + 0.020 + '% ' + ((100 / (this.rowSpan - 1)) * row) + '%';
                 icon.style.backgroundSize = '2900% 1300%';
 
