@@ -985,6 +985,14 @@ var iconDataNew = {
             "name": "Spirit Well",
             "category": "mapIcon"
         },
+        "Leafpile": {
+            "name": "Leafpile",
+            "category": "mapIcon"
+        },
+        "Creep": {
+            "name": "Creep",
+            "category": "mapIcon"
+        },
         "Breakable Door Broken": {
             "name": "Breakable Door Broken",
             "category": "mapIcon"
@@ -997,12 +1005,40 @@ var iconDataNew = {
             "name": "Breakable Wall",
             "category": "mapIcon"
         },
+        "Breakable Stone Wall": {
+            "name": "Breakable Stone Wall",
+            "category": "mapIcon"
+        },
+        "Breakable Stone Wall Broken": {
+            "name": "Breakable Stone Wall Broken",
+            "category": "mapIcon"
+        },
+        "Breakable Stick Wall": {
+            "name": "Breakable Stick Wall",
+            "category": "mapIcon"
+        },
+        "Fire Pedestal": {
+            "name": "Fire Pedestal",
+            "category": "mapIcon"
+        },
+        "Grenade Lantern": {
+            "name": "Grenade Lantern",
+            "category": "mapIcon"
+        },
+        "Stone Door": {
+            "name": "Stone Door",
+            "category": "mapIcon"
+        },
         "Keystone Door 2": {
             "name": "Spirit Gate 2",
             "category": "mapIcon"
         },
         "Keystone Door 4": {
             "name": "Spirit Gate 4",
+            "category": "mapIcon"
+        },
+        "Lever": {
+            "name": "Lever",
             "category": "mapIcon"
         },
         "Skill Pedestal": {
